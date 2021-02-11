@@ -35,7 +35,7 @@ commands:
     steps:
       - run:
           name: Firebase Deploy
-          command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --only hosting,firestore --project=$PROJECT_ID'     
+          command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --only hosting,firestore --project=$PROJECT_ID    
 jobs:
   build-deploy:
     executor: node12
