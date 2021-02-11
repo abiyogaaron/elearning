@@ -18,8 +18,8 @@
   },
   "scripts": {
     "start": "NODE_ENV=development &&react-scripts start",
-    "lint": "eslint '*/**/*.{js,ts,tsx}'",
-    "lint:fix": "eslint '*/**/*.{js,ts,tsx}' --fix",
+    "lint": "eslint './src/**/*.{js,ts,tsx}'",
+    "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",
     "build": "NODE_ENV=production &&react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

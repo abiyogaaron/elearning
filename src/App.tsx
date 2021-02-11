@@ -4,6 +4,7 @@ import './App.css';
 
 // test precommit
 function App() {
+  console.log('aa');
   return (
     <div className="App">
       <header className="App-header">
