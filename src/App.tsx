@@ -9,11 +9,11 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit
+          Abiyogaaron
           {' '}
-          <code>PIPELINE TESTING</code>
+          <code>Deployment testing</code>
           {' '}
-          and save to reload.
+          fuckin circleci and firebase fuckin hate with this devops thing fak!
         </p>
         <a
           className="App-link"
