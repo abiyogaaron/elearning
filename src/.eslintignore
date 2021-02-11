@@ -1,1 +1,5 @@
 build/*
+react-app-env.d.ts
+reportWebVitals.ts
+setupTest.ts
+index.tsx
