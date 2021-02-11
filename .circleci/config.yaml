@@ -13,8 +13,7 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
       - run: npm install
-      - run: npm install -g eslint
-      - run: npm lint:fix
+      - run: './node_modules/.bin/eslint "./src/**/*.{js,ts,tsx}"'
       - save_cache:
           paths:
             - node_modules
