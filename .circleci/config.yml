@@ -22,4 +22,4 @@ jobs:
             - build
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run-script build
-      - run: './node_modules/.bin/firebase deploy --only hosting --token=$FIREBASE_TOKEN'
+      - run: './node_modules/.bin/firebase deploy --only hosting --project elearning-react-server --token=$FIREBASE_TOKEN'
