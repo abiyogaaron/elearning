@@ -13,3 +13,13 @@ version: 2.1
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
       - run: npm install
+      - run: npm lint
+      - save_cache:
+          paths:
+            - node_modules
+            - ~/.npm 
+            - ~/.cache
+            - build
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm run-script build
+      - run: './node_modules/.bin/firebase deploy --only hosting --token=$FIREBASE_TOKEN'
