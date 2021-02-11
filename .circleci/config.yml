@@ -13,7 +13,9 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
       - run: npm install
-      - run: './node_modules/.bin/eslint "./src/**/*.{js,ts,tsx}"'
+      - run:
+          name: Run Linter
+          command: './node_modules/.bin/eslint "./src/**/*.{js,ts,tsx}"'
       - save_cache:
           paths:
             - node_modules
@@ -22,5 +24,6 @@ jobs:
             - build
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run-script build
-      - run: './node_modules/.bin/firebase use $PROJECT_ID'
-      - run: './node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --only hosting,firestore'
+      - run:
+          name: Deploy production to firebase
+          command: './node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --only hosting,firestore --project=$PROJECT_ID'
