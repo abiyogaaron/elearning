@@ -11,7 +11,7 @@ function App() {
         <p>
           Edit
           {' '}
-          <code>src/App.tsx</code>
+          <code>PIPELINE TESTING</code>
           {' '}
           and save to reload.
         </p>
