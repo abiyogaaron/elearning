@@ -1,29 +1,53 @@
-version: 2
-jobs:
-  build:
-    only:
-      - master
+version: 2.1
+
+executors:
+  node12:
     docker:
-      - image: circleci/node:12.9.1-browsers
+      - image: circleci/node:12
     working_directory: ~/repo
+
+commands:
+  build:
+    description: "Builds the project"
     steps:
       - checkout
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
-      - run: npm install
       - run:
-          name: Run Linter
-          command: './node_modules/.bin/eslint "./src/**/*.{js,ts,tsx}"'
+          name: Install Dependencies
+          command: npm install 
       - save_cache:
-          paths:
-            - node_modules
-            - ~/.npm 
-            - ~/.cache
-            - build
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm run-script build
+          paths:
+            - ./node_modules
+            - build
       - run:
-          name: Deploy production to firebase
-          command: './node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --only hosting,firestore --project=$PROJECT_ID'
+          name: Run eslint
+          command: ./node_modules/.bin/eslint "./src/**/*.{js,ts,tsx}"
+      - run:
+          name: Build for current environment.
+          command: npm run-script build
+          build:
+  deploy:
+    description: "Deploy"
+    steps:
+      - run:
+          name: Firebase Deploy
+          command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --only hosting,firestore --project=$PROJECT_ID'     
+jobs:
+  build-deploy:
+    executor: node12
+    steps:
+      - build
+      - deploy
+
+workflows:
+  version: 2
+  production:
+    jobs:
+      - build-deploy:
+          filters:
+            branches:
+              only: master
