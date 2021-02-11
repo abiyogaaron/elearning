@@ -22,5 +22,4 @@ jobs:
             - build
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run-script build
-      - run: './node_modules/.bin/firebase --token=$FIREBASE_TOKEN'
-      - run: './node_modules/.bin/firebase deploy --only hosting,firestore:rules,firestore:indexes --project="$PROJECT_ID"'
+      - run: './node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --only hosting,firestore'
