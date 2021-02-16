@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import LoginPage from './container/LoginPage';
+import LoginPage from './container/loginPage';
 import 'semantic-ui-css/semantic.min.css';
 
 // eslint-disable-next-line react/prefer-stateless-function
