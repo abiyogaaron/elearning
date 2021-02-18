@@ -63,7 +63,7 @@ class LoginPage extends React.PureComponent<ILoginPageProps, ILoginPageStates> {
 
     return (
       <Grid textAlign="center" verticalAlign="middle" className="login-page">
-        <Grid.Column width="5">
+        <Grid.Column mobile="14" tablet="8" computer="5">
           <Header as="h2" textAlign="center" color="teal">
             <Image src={logo} centered />
             Sign in to your account

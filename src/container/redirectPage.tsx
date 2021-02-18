@@ -8,7 +8,7 @@ import '../styles/redirectPage.modules.scss';
 
 const RedirectPage = () => (
   <Grid textAlign="center" verticalAlign="middle" className="redirect-page">
-    <Grid.Column width="6">
+    <Grid.Column mobile="14" tablet="8" computer="5">
       <Header as="h1" color="teal" icon>
         <Icon name="warning sign" circular />
         <Header.Content>404</Header.Content>
