@@ -28,7 +28,7 @@ commands:
           command: ./node_modules/.bin/eslint "./src/**/*.{js,ts,tsx}"
       - run:
           name: Build for current environment.
-          command: npm run-script build
+          command: npm run build
           build:
   deploy:
     description: "Deploy"
