@@ -15,7 +15,7 @@ import { LOGIN_VALIDATION_RULES } from '../helper/validationRule';
 import {
   setErrors,
 } from '../redux/actions/loginPage';
-import '../styles/loginPage.modules.scss';
+import '../styles/LoginPage.modules.scss';
 import logo from '../images/elearning-logo.png';
 import ErrorMessage from '../components/errorMessage';
 
