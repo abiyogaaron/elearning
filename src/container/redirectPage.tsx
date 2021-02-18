@@ -4,7 +4,7 @@ import {
   Header,
   Icon,
 } from 'semantic-ui-react';
-import '../styles/RedirectPage.modules.scss';
+import '../styles/redirectPage.modules.scss';
 
 const RedirectPage = () => (
   <Grid textAlign="center" verticalAlign="middle" className="redirect-page">
