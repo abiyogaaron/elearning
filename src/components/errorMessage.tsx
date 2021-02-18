@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/ErrorMessage.modules.scss';
+import '../styles/errorMessage.modules.scss';
 
 interface IErrorMessageProps {
   message: string;
