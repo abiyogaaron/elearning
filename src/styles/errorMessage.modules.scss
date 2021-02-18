@@ -1,0 +1,6 @@
+@import './variable.scss';
+
+.error-message {
+  color: $error-color;
+  text-align: left;
+}
