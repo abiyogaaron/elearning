@@ -6,7 +6,7 @@ import {
 } from 'semantic-ui-react';
 import '../styles/RedirectPage.modules.scss';
 
-const redirectPage = () => (
+const RedirectPage = () => (
   <Grid textAlign="center" verticalAlign="middle" className="redirect-page">
     <Grid.Column width="6">
       <Header as="h1" color="teal" icon>
@@ -18,4 +18,4 @@ const redirectPage = () => (
   </Grid>
 );
 
-export default redirectPage;
+export default RedirectPage;
