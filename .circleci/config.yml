@@ -18,6 +18,8 @@ commands:
       - run:
           name: Install Dependencies
           command: npm install 
+          environment:
+            REACT_APP_WEBSITE_TITLE: $REACT_APP_WEBSITE_TITLE
       - save_cache:
           key: v1-dependencies-{{ checksum "package.json" }}
           paths:
@@ -29,8 +31,6 @@ commands:
       - run:
           name: Build for current environment.
           command: npm run build
-          environment:
-            REACT_APP_WEBSITE_TITLE: $REACT_APP_WEBSITE_TITLE
   deploy:
     description: "Deploy"
     steps:
