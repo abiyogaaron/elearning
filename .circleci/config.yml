@@ -16,6 +16,10 @@ commands:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
       - run:
+          name: setup NODE_ENV
+          environment:
+            REACT_APP_WEBSITE_TITLE: $REACT_APP_WEBSITE_TITLE
+      - run:
           name: Install Dependencies
           command: npm install 
       - save_cache:
