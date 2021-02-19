@@ -1,4 +1,28 @@
 import { IFormLoginPage } from './form';
+import { ICommonUser } from './index';
+
+export enum ECommonAction {
+  COMMON_SET_USER_AUTH = 'COMMON_SET_USER_AUTH',
+  COMMON_RESET_STATE = 'COMMON_RESET_STATE',
+  COMMON_SET_PAGE_LOADING = 'COMMON_SET_PAGE_LOADING',
+}
+
+export interface ICommonSetUserAuthAction {
+  user: ICommonUser;
+}
+
+export interface ICommonSetPageLoadingAction {
+  pageLoading: boolean;
+}
+
+export type TCommonPayload =
+  | ICommonSetUserAuthAction
+  | ICommonSetPageLoadingAction;
+
+export interface ICommonAction {
+  type: ECommonAction;
+  payload: TCommonPayload;
+}
 
 export enum ELoginPageAction {
   LOGIN_SET_LOADING = 'LOGIN_SET_LOADING',
@@ -30,4 +54,5 @@ export interface ILoginPageAction {
 }
 
 export type TAllAction =
-  | ILoginPageAction;
+  | ILoginPageAction
+  | ICommonAction;

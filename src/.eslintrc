@@ -6,6 +6,7 @@
     "airbnb-typescript"
   ],
   "rules":{
+    "react/jsx-props-no-spreading": "off",
     "linebreak-style": 0,
     "one-var-declaration-per-line":"error",
     "no-shadow":"off",

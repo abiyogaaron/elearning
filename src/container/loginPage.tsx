@@ -9,11 +9,14 @@ import {
   Button,
   Image,
 } from 'semantic-ui-react';
+import { History } from 'history';
 import { ILoginPageState, IAppState } from '../interface/state';
 import Validator from '../helper/Validator';
 import { LOGIN_VALIDATION_RULES } from '../helper/validationRule';
 import {
   setErrors,
+  loginAuthentication,
+  resetStateData,
 } from '../redux/actions/loginPage';
 import '../styles/LoginPage.modules.scss';
 import logo from '../images/elearning-logo.png';
@@ -22,6 +25,8 @@ import ErrorMessage from '../components/errorMessage';
 interface ILoginPageProps extends RouteComponentProps {
   loginPage: ILoginPageState;
   setErrors(errors: { [key: string]: string }): void;
+  loginAuthentication(email: string, password: string, history: History): void;
+  resetStateData(): void;
 }
 
 interface ILoginPageStates {
@@ -38,10 +43,14 @@ class LoginPage extends React.PureComponent<ILoginPageProps, ILoginPageStates> {
     };
   }
 
+  componentWillUnmount() {
+    this.props.resetStateData();
+  }
+
   public handleClick = () => {
     Validator.validate(this.state, LOGIN_VALIDATION_RULES)
-      .then((data) => {
-        console.log(data);
+      .then(async (data) => {
+        this.props.loginAuthentication(data.email, data.password, this.props.history);
       })
       .catch((err) => {
         const errorMessages = Validator.getErrorMessages(err);
@@ -59,7 +68,7 @@ class LoginPage extends React.PureComponent<ILoginPageProps, ILoginPageStates> {
 
   public render() {
     const { email, password } = this.state;
-    const { errors } = this.props.loginPage;
+    const { errors, isLoading } = this.props.loginPage;
 
     return (
       <Grid textAlign="center" verticalAlign="middle" className="login-page">
@@ -69,7 +78,7 @@ class LoginPage extends React.PureComponent<ILoginPageProps, ILoginPageStates> {
             Sign in to your account
           </Header>
           <Form size="large">
-            <Segment raised padded>
+            <Segment raised padded loading={isLoading}>
               <Form.Input
                 fluid
                 icon="user"
@@ -93,7 +102,13 @@ class LoginPage extends React.PureComponent<ILoginPageProps, ILoginPageStates> {
                 error={!!errors.password}
               />
               <ErrorMessage message={errors.password} />
-              <Button color="teal" fluid size="large" onClick={this.handleClick}>
+              <Button
+                color="teal"
+                fluid
+                size="large"
+                onClick={this.handleClick}
+                disabled={!(email && password)}
+              >
                 Login
               </Button>
             </Segment>
@@ -110,6 +125,8 @@ const mapStateToProps = ({ loginPage }: IAppState) => ({
 
 const mapDispatchToProps = {
   setErrors,
+  loginAuthentication,
+  resetStateData,
 };
 
 export default connect(

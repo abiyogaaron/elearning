@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
+import firebase from 'firebase/app';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import CONFIG_FIREBASE from './environment';
+
+firebase.initializeApp(CONFIG_FIREBASE);
 
 ReactDOM.render(
   <BrowserRouter>

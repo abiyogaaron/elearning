@@ -4,9 +4,11 @@ import {
 import thunkMiddleware from 'redux-thunk';
 import logger from 'redux-logger';
 import loginPageReducer from './reducer/loginPage';
+import common from './reducer/common';
 
 const rootReducer = combineReducers({
   loginPage: loginPageReducer,
+  common,
 });
 
 let composeEnhancer = compose;
