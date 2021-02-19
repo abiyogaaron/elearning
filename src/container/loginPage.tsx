@@ -43,6 +43,12 @@ class LoginPage extends React.PureComponent<ILoginPageProps, ILoginPageStates> {
     };
   }
 
+  componentDidMount() {
+    if (localStorage.getItem('user-token-elearning')) {
+      this.props.history.push('/dashboard');
+    }
+  }
+
   componentWillUnmount() {
     this.props.resetStateData();
   }

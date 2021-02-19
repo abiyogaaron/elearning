@@ -1,21 +1,26 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Dimmer, Loader } from 'semantic-ui-react';
+import { Dimmer, Loader, Sidebar } from 'semantic-ui-react';
 import { IAppState, ICommonState } from '../interface/state';
 import { ICommonUser } from '../interface';
 import {
   setUserAuth,
   resetCommonState,
   setPageLoading,
+  setSidebarVisible,
 } from '../redux/actions/common';
 import Firebase from '../service';
+import SidebarMenu from './sidebarMenu';
+import Navbar from './navbar';
+import '../styles/AuthenticationWrapper.modules.scss';
 
 interface IAuthenticatedWrapperProps extends RouteComponentProps {
   common: ICommonState,
   setUserAuth(user: ICommonUser): void;
   resetCommonState(): void;
   setPageLoading(pageLoading: boolean): void;
+  setSidebarVisible(sidebarVisible: boolean): void;
 }
 
 class AuthenticatedWrapper extends React.Component<IAuthenticatedWrapperProps> {
@@ -47,11 +52,41 @@ class AuthenticatedWrapper extends React.Component<IAuthenticatedWrapperProps> {
     this.props.resetCommonState();
   }
 
+  public logout = () => {
+    const firebase = new Firebase();
+    firebase.logout(this.props.history);
+  };
+
+  public toggleSidebar = () => {
+    this.props.setSidebarVisible(!this.props.common.sidebarVisible);
+  };
+
+  public contentClick = () => {
+    if (this.props.common.sidebarVisible) {
+      this.props.setSidebarVisible(!this.props.common.sidebarVisible);
+    }
+  };
+
   public render() {
-    const { pageLoading } = this.props.common;
+    const { pageLoading, sidebarVisible } = this.props.common;
     return (
       <>
-        {this.props.children}
+        <Sidebar.Pushable>
+          <SidebarMenu isAdmin visible={sidebarVisible} />
+          <Sidebar.Pusher
+            className="authentication-wrapper"
+            dimmed={sidebarVisible}
+            onClick={this.contentClick}
+          >
+            <Navbar
+              logout={this.logout}
+              name="My Profile"
+              toggleSidebar={this.toggleSidebar}
+            />
+            {this.props.children}
+          </Sidebar.Pusher>
+        </Sidebar.Pushable>
+
         <Dimmer active={pageLoading} page>
           <Loader size="massive">Loading ...</Loader>
         </Dimmer>
@@ -68,6 +103,7 @@ const mapDispatchToProps = {
   setUserAuth,
   resetCommonState,
   setPageLoading,
+  setSidebarVisible,
 };
 
 export default connect(

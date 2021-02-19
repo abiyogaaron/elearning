@@ -5,6 +5,7 @@ export enum ECommonAction {
   COMMON_SET_USER_AUTH = 'COMMON_SET_USER_AUTH',
   COMMON_RESET_STATE = 'COMMON_RESET_STATE',
   COMMON_SET_PAGE_LOADING = 'COMMON_SET_PAGE_LOADING',
+  COMMON_SET_SIDEBAR = 'COMMON_SET_SIDEBAR',
 }
 
 export interface ICommonSetUserAuthAction {
@@ -15,9 +16,14 @@ export interface ICommonSetPageLoadingAction {
   pageLoading: boolean;
 }
 
+export interface ICommonSetSidebarAction {
+  sidebarVisible: boolean;
+}
+
 export type TCommonPayload =
   | ICommonSetUserAuthAction
-  | ICommonSetPageLoadingAction;
+  | ICommonSetPageLoadingAction
+  | ICommonSetSidebarAction;
 
 export interface ICommonAction {
   type: ECommonAction;

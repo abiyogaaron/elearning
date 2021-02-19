@@ -1,3 +1,5 @@
+import { SemanticICONS } from 'semantic-ui-react';
+
 export interface IAuthFireBaseResponse {
   displayName: string | null;
   email: string | null;
@@ -19,4 +21,10 @@ export interface ICommonUser {
   isAnonymous: boolean;
   lastLoginAt: number;
   createdAt: number;
+}
+
+export interface IMenuItems {
+  to: string;
+  title: string;
+  icon: SemanticICONS;
 }

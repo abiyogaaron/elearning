@@ -1,25 +1,17 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import Firebase from '../service';
-import Navbar from '../components/navbar';
+import { Segment, Container } from 'semantic-ui-react';
 
 interface IHomeProps extends RouteComponentProps {
 
 }
 
 class Home extends React.PureComponent<IHomeProps> {
-  public logout = () => {
-    const firebase = new Firebase();
-    firebase.logout(this.props.history);
-  };
-
-  x;
-
   public render() {
     return (
-      <>
-        <Navbar logout={this.logout} name="My Profile" />
-      </>
+      <Container>
+        <Segment>Pellentesque habitant morbi tristique senectus.</Segment>
+      </Container>
     );
   }
 }

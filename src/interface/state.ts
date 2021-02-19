@@ -10,6 +10,7 @@ export interface ILoginPageState {
 export interface ICommonState {
   user: ICommonUser;
   pageLoading: boolean;
+  sidebarVisible: boolean;
 }
 
 export interface IAppState {

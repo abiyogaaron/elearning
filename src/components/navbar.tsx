@@ -3,12 +3,14 @@ import {
   Container,
   Menu,
   Dropdown,
+  Icon,
 } from 'semantic-ui-react';
 import '../styles/Navbar.modules.scss';
 
 interface INavbarProps {
   logout(): void;
   name: string;
+  toggleSidebar(): void;
 }
 
 class Navbar extends React.PureComponent<INavbarProps> {
@@ -18,8 +20,11 @@ class Navbar extends React.PureComponent<INavbarProps> {
 
   public render() {
     return (
-      <Menu fixed="top" inverted>
+      <Menu className="navbar" inverted>
         <Container className="navbar-top">
+          <Menu.Item onClick={this.props.toggleSidebar}>
+            <Icon name="bars" />
+          </Menu.Item>
           <Dropdown
             item
             simple
@@ -31,7 +36,6 @@ class Navbar extends React.PureComponent<INavbarProps> {
           >
             <Dropdown.Menu>
               <Dropdown.Item icon="settings" text="settings" />
-              <Dropdown.Divider />
               <Dropdown.Item icon="sign out" text="Sign out" onClick={this.logout} />
             </Dropdown.Menu>
           </Dropdown>

@@ -14,6 +14,11 @@ export const setPageLoading = (pageLoading: boolean): ICommonAction => ({
   payload: { pageLoading },
 });
 
+export const setSidebarVisible = (sidebarVisible: boolean): ICommonAction => ({
+  type: ECommonAction.COMMON_SET_SIDEBAR,
+  payload: { sidebarVisible },
+});
+
 export const resetCommonState = () => ({
   type: ECommonAction.COMMON_RESET_STATE,
 });

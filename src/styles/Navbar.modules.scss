@@ -1,5 +1,14 @@
 @import './variable.scss';
 
 .navbar-top{
-  flex-direction: row-reverse !important;
+  // flex-direction: row-reverse !important;
+  justify-content: space-between;
+}
+
+.ui.dropdown >.text {
+  margin-right: 8px !important;
+}
+
+.navbar {
+  border-radius: 0 !important;
 }

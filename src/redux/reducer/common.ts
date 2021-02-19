@@ -4,6 +4,7 @@ import {
   ICommonAction,
   ICommonSetUserAuthAction,
   ICommonSetPageLoadingAction,
+  ICommonSetSidebarAction,
 } from '../../interface/action';
 
 const INITIAL_STATE: ICommonState = {
@@ -19,6 +20,7 @@ const INITIAL_STATE: ICommonState = {
     createdAt: 0,
   },
   pageLoading: false,
+  sidebarVisible: false,
 };
 
 const commonReducer = (state = INITIAL_STATE, action: ICommonAction)
@@ -31,6 +33,10 @@ const commonReducer = (state = INITIAL_STATE, action: ICommonAction)
     case ECommonAction.COMMON_SET_PAGE_LOADING: {
       const { pageLoading } = action.payload as ICommonSetPageLoadingAction;
       return { ...state, pageLoading };
+    }
+    case ECommonAction.COMMON_SET_SIDEBAR: {
+      const { sidebarVisible } = action.payload as ICommonSetSidebarAction;
+      return { ...state, sidebarVisible };
     }
     case ECommonAction.COMMON_RESET_STATE: {
       return INITIAL_STATE;
