@@ -12,6 +12,7 @@
     "no-shadow":"off",
     "react/prop-types":"off",
     "no-plusplus":"off",
+    "jsx-a11y/label-has-associated-control": "off",
     "@typescript-eslint/naming-convention":"off",
     "react/destructuring-assignment":"off",
     "react/no-array-index-key":"warn",

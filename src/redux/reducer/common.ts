@@ -5,6 +5,7 @@ import {
   ICommonSetUserAuthAction,
   ICommonSetPageLoadingAction,
   ICommonSetSidebarAction,
+  ICommonSetUserProfileAction,
 } from '../../interface/action';
 
 const INITIAL_STATE: ICommonState = {
@@ -21,6 +22,13 @@ const INITIAL_STATE: ICommonState = {
   },
   pageLoading: false,
   sidebarVisible: false,
+  userProfile: {
+    email: '',
+    isVerified: false,
+    name: null,
+    role: 'student',
+    status: 'active',
+  },
 };
 
 const commonReducer = (state = INITIAL_STATE, action: ICommonAction)
@@ -37,6 +45,10 @@ const commonReducer = (state = INITIAL_STATE, action: ICommonAction)
     case ECommonAction.COMMON_SET_SIDEBAR: {
       const { sidebarVisible } = action.payload as ICommonSetSidebarAction;
       return { ...state, sidebarVisible };
+    }
+    case ECommonAction.COMMON_SET_USER_PROFILE: {
+      const { userProfile } = action.payload as ICommonSetUserProfileAction;
+      return { ...state, userProfile };
     }
     case ECommonAction.COMMON_RESET_STATE: {
       return INITIAL_STATE;

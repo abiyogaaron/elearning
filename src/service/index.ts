@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/storage';
 import { History } from 'history';
 import { IAuthFireBaseResponse } from '../interface';
 
@@ -9,9 +10,12 @@ class Firebase {
 
   private firestore;
 
+  private storage;
+
   constructor() {
     this.auth = firebase.auth();
     this.firestore = firebase.firestore();
+    this.storage = firebase.storage();
   }
 
   public getAuth() {
@@ -59,11 +63,25 @@ class Firebase {
     });
   }
 
-  public readUserByUID(uid: string): Promise<any> {
+  public readUserByEmail(email: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.firestore.collection('users').where('uid', '==', uid).get()
+      this.firestore.collection('users').where('email', '==', email).get()
         .then((docRef) => {
           resolve(docRef);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  public getUserDataByEmail(email: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.firestore.collection('users').where('email', '==', email).get()
+        .then((docRef) => {
+          docRef.forEach((doc) => {
+            resolve(doc.data());
+          });
         })
         .catch((err) => {
           reject(err);
@@ -81,6 +99,11 @@ class Firebase {
           reject(err);
         });
     });
+  }
+
+  public uploadPPT(slideName: string, file: any) {
+    const uploadTask = this.storage.ref(`ppt/${slideName}`).put(file);
+    return uploadTask;
   }
 }
 

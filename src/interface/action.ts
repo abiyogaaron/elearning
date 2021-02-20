@@ -1,11 +1,12 @@
 import { IFormLoginPage } from './form';
-import { ICommonUser } from './index';
+import { ICommonUser, UserProfile } from './index';
 
 export enum ECommonAction {
   COMMON_SET_USER_AUTH = 'COMMON_SET_USER_AUTH',
   COMMON_RESET_STATE = 'COMMON_RESET_STATE',
   COMMON_SET_PAGE_LOADING = 'COMMON_SET_PAGE_LOADING',
   COMMON_SET_SIDEBAR = 'COMMON_SET_SIDEBAR',
+  COMMON_SET_USER_PROFILE = 'COMMON_SET_USER_PROFILE',
 }
 
 export interface ICommonSetUserAuthAction {
@@ -20,10 +21,15 @@ export interface ICommonSetSidebarAction {
   sidebarVisible: boolean;
 }
 
+export interface ICommonSetUserProfileAction {
+  userProfile: UserProfile;
+}
+
 export type TCommonPayload =
   | ICommonSetUserAuthAction
   | ICommonSetPageLoadingAction
-  | ICommonSetSidebarAction;
+  | ICommonSetSidebarAction
+  | ICommonSetUserProfileAction;
 
 export interface ICommonAction {
   type: ECommonAction;
@@ -59,6 +65,30 @@ export interface ILoginPageAction {
   payload: TLoginPagePayload;
 }
 
+export enum EHomePageAction {
+  HOME_SET_PROGRESS = 'HOME_SET_PROGRESS',
+  HOME_SET_LOADING = 'HOME_SET_LOADING',
+  HOME_RESET_STATE = 'HOME_RESET_STATE',
+}
+
+export interface IHomePageSetProgressAction {
+  progressUpload: number;
+}
+
+export interface IHomePageSetLoadingAction {
+  isLoading: boolean;
+}
+
+export type THomePagePayload =
+  | IHomePageSetProgressAction
+  | IHomePageSetLoadingAction;
+
+export interface IHomePageAction {
+  type: EHomePageAction;
+  payload: THomePagePayload;
+}
+
 export type TAllAction =
   | ILoginPageAction
-  | ICommonAction;
+  | ICommonAction
+  | IHomePageAction;

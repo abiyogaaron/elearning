@@ -9,6 +9,7 @@ import {
   resetCommonState,
   setPageLoading,
   setSidebarVisible,
+  getUserProfile,
 } from '../redux/actions/common';
 import Firebase from '../service';
 import SidebarMenu from './sidebarMenu';
@@ -21,6 +22,7 @@ interface IAuthenticatedWrapperProps extends RouteComponentProps {
   resetCommonState(): void;
   setPageLoading(pageLoading: boolean): void;
   setSidebarVisible(sidebarVisible: boolean): void;
+  getUserProfile(email: string): void;
 }
 
 class AuthenticatedWrapper extends React.Component<IAuthenticatedWrapperProps> {
@@ -28,7 +30,6 @@ class AuthenticatedWrapper extends React.Component<IAuthenticatedWrapperProps> {
 
   constructor(props) {
     super(props);
-
     if (!localStorage.getItem('user-token-elearning')) {
       this.props.history.push('/');
     }
@@ -37,9 +38,10 @@ class AuthenticatedWrapper extends React.Component<IAuthenticatedWrapperProps> {
   componentDidMount() {
     const firebase = new Firebase();
     this.props.setPageLoading(true);
-    this.observer = firebase.getAuth().onAuthStateChanged((userAuth) => {
+    this.observer = firebase.getAuth().onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         this.props.setUserAuth(userAuth);
+        await this.props.getUserProfile(userAuth.email);
       } else {
         firebase.logout(this.props.history);
       }
@@ -68,11 +70,16 @@ class AuthenticatedWrapper extends React.Component<IAuthenticatedWrapperProps> {
   };
 
   public render() {
-    const { pageLoading, sidebarVisible } = this.props.common;
+    const { pageLoading, sidebarVisible, userProfile } = this.props.common;
+    const { role, email } = userProfile;
+
     return (
       <>
         <Sidebar.Pushable>
-          <SidebarMenu isAdmin visible={sidebarVisible} />
+          <SidebarMenu
+            isAdmin={role === 'admin'}
+            visible={sidebarVisible}
+          />
           <Sidebar.Pusher
             className="authentication-wrapper"
             dimmed={sidebarVisible}
@@ -80,7 +87,7 @@ class AuthenticatedWrapper extends React.Component<IAuthenticatedWrapperProps> {
           >
             <Navbar
               logout={this.logout}
-              name="My Profile"
+              name={email}
               toggleSidebar={this.toggleSidebar}
             />
             {this.props.children}
@@ -104,6 +111,7 @@ const mapDispatchToProps = {
   resetCommonState,
   setPageLoading,
   setSidebarVisible,
+  getUserProfile,
 };
 
 export default connect(

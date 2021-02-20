@@ -6,7 +6,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import CONFIG_FIREBASE from './environment';
 
-firebase.initializeApp(CONFIG_FIREBASE);
+if (!firebase.apps.length) {
+  firebase.initializeApp(CONFIG_FIREBASE);
+}
 
 ReactDOM.render(
   <BrowserRouter>

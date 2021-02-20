@@ -35,10 +35,9 @@ export const loginAuthentication = (
     const firebase = new Firebase();
     const res = await firebase.authentication(email, password);
 
-    const userData = await firebase.readUserByUID(res.uid);
+    const userData = await firebase.readUserByEmail(email);
     if (userData.empty) {
       const userdata = {
-        uid: res.uid,
         name: res.displayName,
         email: res.email,
         isVerified: res.emailVerified,
