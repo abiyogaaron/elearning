@@ -1,9 +1,9 @@
-import { IFormLoginPage } from './form';
 import { ICommonUser, UserProfile } from './index';
+import { ISubjectModels, ILoginModels } from './model';
 
 export interface ILoginPageState {
   isLoading: boolean;
-  form: IFormLoginPage;
+  form: ILoginModels;
   errors: { [key: string]: string };
 }
 
@@ -19,8 +19,21 @@ export interface IHomeState {
   isLoading: boolean;
 }
 
+export interface ISubjectConfigPageState {
+  isLoading: boolean;
+  form: ISubjectModels;
+  errors: { [key: string]: string };
+}
+
+export interface ISubjectsPageState {
+  isLoading: boolean;
+  list: ISubjectModels[];
+}
+
 export interface IAppState {
   loginPage: ILoginPageState;
   common: ICommonState;
   homePage: IHomeState;
+  subjectConfigPage: ISubjectConfigPageState;
+  subjectsPage: ISubjectsPageState;
 }

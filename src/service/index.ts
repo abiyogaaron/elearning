@@ -101,6 +101,23 @@ class Firebase {
     });
   }
 
+  public getDocumentsFromCollections<T>(table: string): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+      this.firestore.collection(table).get()
+        .then((docRef) => {
+          const list: any = [];
+          docRef.forEach((doc) => {
+            const { id } = doc;
+            list.push({ id, ...doc.data() });
+            resolve(list);
+          });
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
   public uploadPPT(slideName: string, file: any) {
     const uploadTask = this.storage.ref(`ppt/${slideName}`).put(file);
     return uploadTask;

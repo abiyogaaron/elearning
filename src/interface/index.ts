@@ -39,3 +39,35 @@ export interface IMenuItems {
   title: string;
   icon: SemanticICONS;
 }
+
+export type IFieldType = 'text' | 'radio' | 'select' | 'checkbox' | 'dropdown';
+
+export interface IFieldSelectOptions {
+  key: string;
+  value: string;
+  text: string;
+}
+
+export interface IFields {
+  label: string;
+  id: string;
+  key: string;
+  type: IFieldType;
+  placeholder?: string;
+  options?: IFieldSelectOptions[]
+}
+
+export interface IFormFields {
+  title: string;
+  loading: boolean;
+  form: IFields[]
+}
+
+export type ITabType =
+  'Basic config' |
+  'Subject list';
+
+export interface ITab {
+  name: string;
+  to: string;
+}

@@ -5,12 +5,16 @@ import thunkMiddleware from 'redux-thunk';
 import logger from 'redux-logger';
 import loginPageReducer from './reducer/loginPage';
 import homePageReducer from './reducer/homePage';
+import subjectConfigPageReducer from './reducer/subjectConfigPage';
+import subjectsPageReducer from './reducer/subjectsPage';
 import common from './reducer/common';
 
 const rootReducer = combineReducers({
   loginPage: loginPageReducer,
   common,
   homePage: homePageReducer,
+  subjectConfigPage: subjectConfigPageReducer,
+  subjectsPage: subjectsPageReducer,
 });
 
 let composeEnhancer = compose;

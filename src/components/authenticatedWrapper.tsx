@@ -37,10 +37,14 @@ class AuthenticatedWrapper extends React.Component<IAuthenticatedWrapperProps> {
 
   componentDidMount() {
     const firebase = new Firebase();
+
     this.props.setPageLoading(true);
     this.observer = firebase.getAuth().onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         this.props.setUserAuth(userAuth);
+        const refreshToken = await userAuth.getIdToken();
+        localStorage.setItem('user-token-elearning', refreshToken);
+
         await this.props.getUserProfile(userAuth.email);
       } else {
         firebase.logout(this.props.history);

@@ -1,4 +1,4 @@
-import { IFormLoginPage } from './form';
+import { ILoginModels, ISubjectModels } from './model';
 import { ICommonUser, UserProfile } from './index';
 
 export enum ECommonAction {
@@ -48,7 +48,7 @@ export interface ILoginPageSetLoadingAction {
 }
 
 export interface ILoginPageSetFormAction {
-  form: IFormLoginPage;
+  form: ILoginModels;
 }
 
 export interface ILoginPageSetErrorsAction {
@@ -88,7 +88,61 @@ export interface IHomePageAction {
   payload: THomePagePayload;
 }
 
+export enum ESubjectConfigPageAction {
+  SUBJECT_SET_LOADING = 'SUBJECT_SET_LOADING',
+  SUBJECT_SET_FORM = 'SUBJECT_SET_FORM',
+  SUBJECT_SET_ERRORS = 'SUBJECT_SET_ERRORS',
+  SUBJECT_RESET_STATE = 'SUBJECT_RESET_STATE',
+}
+
+export interface ISubjectConfigPageSetLoadingAction {
+  isLoading: boolean;
+}
+
+export interface ISubjectConfigPageSetFormAction {
+  form: ISubjectModels;
+}
+
+export interface ISubjectConfigPageSetErrorsAction {
+  errors: { [key: string]: string };
+}
+
+export type TSubjectConfigPagePaylod =
+  | ISubjectConfigPageSetLoadingAction
+  | ISubjectConfigPageSetFormAction
+  | ISubjectConfigPageSetErrorsAction;
+
+export interface ISubjectConfigPageAction {
+  type: ESubjectConfigPageAction;
+  payload: TSubjectConfigPagePaylod;
+}
+
+export enum ESubjectsPageAction {
+  SUBJECT_SET_LOADING = 'SUBJECT_SET_LOADING',
+  SUBJECT_SET_LIST = 'SUBJECT_SET_LIST',
+  SUBJECT_RESET_STATE = 'SUBJECT_RESET_STATE',
+}
+
+export interface ISubjectsPageSetLoadingAction {
+  isLoading: boolean;
+}
+
+export interface ISubjectsPageSetListAction {
+  list: ISubjectModels[];
+}
+
+export type TSubjectsPagePayload =
+  | ISubjectsPageSetLoadingAction
+  | ISubjectsPageSetListAction;
+
+export interface ISubjectsPageAction {
+  type: ESubjectsPageAction;
+  payload: TSubjectsPagePayload;
+}
+
 export type TAllAction =
-  | ILoginPageAction
-  | ICommonAction
-  | IHomePageAction;
+| ILoginPageAction
+| ICommonAction
+| IHomePageAction
+| ISubjectConfigPageAction
+| ISubjectsPageAction;
