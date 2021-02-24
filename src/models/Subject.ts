@@ -18,6 +18,14 @@ class Subject implements ISubjectModels {
 
   public subject_ppt_slide_url: string = '';
 
+  public created_at: number = -1;
+
+  public updated_at: number = -1;
+
+  public created_by: string = '';
+
+  public updated_by: string = '';
+
   constructor(data?: ISubjectModels) {
     if (data) {
       this.subject_name = data.subject_name;
@@ -36,6 +44,10 @@ class Subject implements ISubjectModels {
         week_number: this.week_number,
         subject_category: this.subject_category,
         subject_ppt_slide_url: this.subject_ppt_slide_url,
+        created_at: this.created_at,
+        updated_at: this.updated_at,
+        created_by: this.created_by,
+        updated_by: this.updated_by,
       };
     }
 
@@ -45,6 +57,10 @@ class Subject implements ISubjectModels {
       week_number: this.week_number,
       subject_category: this.subject_category,
       subject_ppt_slide_url: this.subject_ppt_slide_url,
+      created_at: this.created_at,
+      updated_at: this.updated_at,
+      created_by: this.created_by,
+      updated_by: this.updated_by,
     };
   }
 }

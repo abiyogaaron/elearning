@@ -35,4 +35,8 @@ export interface ISubjectModels {
   week_number: TWeekNumber;
   subject_category: TSubjectCategory;
   subject_ppt_slide_url: string;
+  created_at: number;
+  updated_at: number;
+  created_by: string;
+  updated_by: string;
 }

@@ -3,7 +3,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 import { History } from 'history';
-import { IAuthFireBaseResponse } from '../interface';
+import { IAuthFireBaseResponse, UserProfile } from '../interface';
 
 class Firebase {
   private auth;
@@ -75,12 +75,24 @@ class Firebase {
     });
   }
 
-  public getUserDataByEmail(email: string): Promise<any> {
+  public getUserDataByEmail(email: string): Promise<UserProfile> {
     return new Promise((resolve, reject) => {
       this.firestore.collection('users').where('email', '==', email).get()
         .then((docRef) => {
+          if (docRef.empty) {
+            resolve({
+              id: '',
+              email: '',
+              isVerified: false,
+              name: null,
+              role: 'student',
+              status: 'active',
+            });
+          }
           docRef.forEach((doc) => {
-            resolve(doc.data());
+            const { id } = doc;
+            const data = doc.data();
+            resolve({ ...data, id });
           });
         })
         .catch((err) => {
@@ -89,9 +101,21 @@ class Firebase {
     });
   }
 
-  public addDocumentToCollections(table: string, doc: any) {
+  public addDocumentToCollections(table: string, doc: any): Promise<any> {
     return new Promise((resolve, reject) => {
       this.firestore.collection(table).add(doc)
+        .then((docRef) => {
+          resolve(docRef);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  public deleteDocumentToCollections(table: string, doc: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.firestore.collection(table).doc(doc).delete()
         .then((docRef) => {
           resolve(docRef);
         })
@@ -106,11 +130,44 @@ class Firebase {
       this.firestore.collection(table).get()
         .then((docRef) => {
           const list: any = [];
+
+          if (docRef.empty) {
+            resolve(list);
+          }
           docRef.forEach((doc) => {
             const { id } = doc;
             list.push({ id, ...doc.data() });
             resolve(list);
           });
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  public getDocumentsFromCollectionsById<T>(table: string, id: string): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+      this.firestore.collection(table).doc(id).get()
+        .then((docRef) => {
+          if (docRef.exists) {
+            const idData = docRef.id;
+            resolve({ ...docRef.data(), idData });
+          } else {
+            throw new Error('Data not found ...');
+          }
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  public updateDocumentsFromCollections<T>(table: string, doc: T, id: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.firestore.collection(table).doc(id).update(doc)
+        .then((docRef) => {
+          resolve(docRef);
         })
         .catch((err) => {
           reject(err);

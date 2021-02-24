@@ -46,6 +46,15 @@ class App extends React.Component<RouteComponentProps> {
               </AuthenticatedWrapper>
             )}
           />
+          <Route
+            exact
+            path="/subjects/:subjectId/config"
+            render={() => (
+              <AuthenticatedWrapper {...this.props}>
+                <SubjectConfigPage />
+              </AuthenticatedWrapper>
+            )}
+          />
           <Route component={RedirectPage} />
         </Switch>
         <Toaster />

@@ -10,6 +10,8 @@ import {
 import { ISubjectModels } from '../../interface/model';
 import Firebase from '../../service';
 
+const TABLE_NAME = 'subjects';
+
 const setLoading = (isLoading: boolean): ISubjectConfigPageAction => ({
   type: ESubjectConfigPageAction.SUBJECT_SET_LOADING,
   payload: { isLoading },
@@ -32,12 +34,53 @@ export const setFormData = (form: ISubjectModels): ISubjectConfigPageAction => (
 export const addSubject = (
   form: ISubjectModels,
   history: History,
+  userId: string,
 ): ThunkAction<void, IAppState, {}, TAllAction> => async (dispatch) => {
   try {
     dispatch(setLoading(true));
     const firebase = new Firebase();
-    await firebase.addDocumentToCollections('subjects', form);
+    const formData = { ...form };
+    formData.created_at = new Date().getTime();
+    formData.created_by = userId;
+
+    await firebase.addDocumentToCollections(TABLE_NAME, form);
     history.push('/subjects');
+  } catch (err) {
+    toast.error(err.message);
+  } finally {
+    dispatch(setLoading(false));
+  }
+};
+
+export const getSubjectById = (
+  id: string,
+): ThunkAction<void, IAppState, {}, TAllAction> => async (dispatch) => {
+  try {
+    dispatch(setLoading(true));
+    const firebase = new Firebase();
+    const subject = await firebase.getDocumentsFromCollectionsById<ISubjectModels>(TABLE_NAME, id);
+    dispatch(setFormData(subject));
+  } catch (err) {
+    toast.error(err.message);
+  } finally {
+    dispatch(setLoading(false));
+  }
+};
+
+export const updateSubject = (
+  form: ISubjectModels,
+  id: string,
+  userId: string,
+): ThunkAction<void, IAppState, {}, TAllAction> => async (dispatch) => {
+  try {
+    dispatch(setLoading(true));
+    const firebase = new Firebase();
+    const formData = { ...form };
+    formData.updated_at = new Date().getTime();
+    formData.updated_by = userId;
+
+    await firebase.updateDocumentsFromCollections<ISubjectModels>(TABLE_NAME, form, id);
+    toast.success(`${id} successfully updated ...`);
   } catch (err) {
     toast.error(err.message);
   } finally {

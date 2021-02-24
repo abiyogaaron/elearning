@@ -38,3 +38,24 @@ export const getSubjects = ()
     dispatch(setLoading(false));
   }
 };
+
+export const deleteSubject = (
+  id: string,
+  index: number,
+)
+: ThunkAction<void, IAppState, {}, TAllAction> => async (dispatch, getState) => {
+  try {
+    dispatch(setLoading(true));
+    const firebase = new Firebase();
+    const list = [...getState().subjectsPage.list];
+
+    await firebase.deleteDocumentToCollections(TABLE_NAME, id);
+    list.splice(index, 1);
+    dispatch(setSubjectList(list));
+    toast.success(`deleting ${id} successfully...`);
+  } catch (err) {
+    toast.error(err.message);
+  } finally {
+    dispatch(setLoading(false));
+  }
+};

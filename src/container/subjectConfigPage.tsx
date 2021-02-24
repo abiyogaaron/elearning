@@ -8,29 +8,36 @@ import {
   Grid,
   Button,
   DropdownProps,
+  Divider,
 } from 'semantic-ui-react';
 import BreadcrumbsMenu from '../components/breadcrumbsMenu';
+import FooterForm from '../components/footerForm';
 import Tabs from '../components/tabs';
 import FormWrapper from '../components/formWrapper';
 import { TAB_LIST_SUBJECTS } from '../constants';
 import { SKELETON_FORM_FIELDS } from '../constants/skeleton';
-import { ISubjectConfigPageState, IAppState } from '../interface/state';
+import { ISubjectConfigPageState, IAppState, ICommonState } from '../interface/state';
 import { ISubjectModels } from '../interface/model';
 import {
   setErrors,
   resetStateData,
   setFormData,
   addSubject,
+  getSubjectById,
+  updateSubject,
 } from '../redux/actions/subjectConfigPage';
 import { SUBJECT_CONFIG_VALIDATION_RULES } from '../helper/validationRule';
 import Validator from '../helper/Validator';
 
 interface ISubjectConfigPageProps extends RouteComponentProps {
   subjectConfigPage: ISubjectConfigPageState;
+  common: ICommonState;
   setErrors(errors: { [key: string]: string }): void;
   setFormData(form: ISubjectModels): void;
   resetStateData(): void;
-  addSubject(form: ISubjectModels, history: History): void;
+  addSubject(form: ISubjectModels, history: History, userId: string): void;
+  getSubjectById(id: string): void;
+  updateSubject(form: ISubjectModels, id: string, userId: string): void;
 }
 
 interface ISubjectConfigPageStates {
@@ -39,19 +46,20 @@ interface ISubjectConfigPageStates {
 
 class SubjectConfigPage extends React.PureComponent
   <ISubjectConfigPageProps, ISubjectConfigPageStates> {
-  private campaignId: number;
+  private subjectId: string;
 
   constructor(props) {
     super(props);
     this.state = {
       isEditMode: true,
     };
-    this.campaignId = props.match.params.campaignId;
+    this.subjectId = props.match.params.subjectId;
   }
 
   componentDidMount() {
-    if (this.campaignId) {
+    if (this.subjectId) {
       this.setState({ isEditMode: false });
+      this.props.getSubjectById(this.subjectId);
     }
   }
 
@@ -77,9 +85,15 @@ class SubjectConfigPage extends React.PureComponent
 
   public handleSave = () => {
     const { form } = this.props.subjectConfigPage;
+    const { userProfile } = this.props.common;
     Validator.validate(form, SUBJECT_CONFIG_VALIDATION_RULES)
       .then(async (data) => {
-        this.props.addSubject(data, this.props.history);
+        if (this.subjectId) {
+          await this.props.updateSubject(data, this.subjectId, userProfile.id);
+          this.setState({
+            isEditMode: false,
+          });
+        } else this.props.addSubject(data, this.props.history, userProfile.id);
       })
       .catch((err) => {
         const errorMessages = Validator.getErrorMessages(err);
@@ -127,6 +141,24 @@ class SubjectConfigPage extends React.PureComponent
     );
   };
 
+  public renderFooter = () => {
+    const { form } = this.props.subjectConfigPage;
+    if (this.subjectId) {
+      return (
+        <>
+          <Divider />
+          <FooterForm
+            createdAt={form.created_at}
+            createdBy={form.created_by}
+            updatedAt={form.updated_at}
+            updatedBy={form.updated_by}
+          />
+        </>
+      );
+    }
+    return <></>;
+  };
+
   public render() {
     const { isEditMode } = this.state;
     const { form, errors, isLoading } = this.props.subjectConfigPage;
@@ -139,7 +171,7 @@ class SubjectConfigPage extends React.PureComponent
           iconName="book"
           menuText="Basic Config"
         />
-        <Segment raised padded loading={isLoading}>
+        <Segment raised padded loading={isLoading} color="teal">
           <Tabs
             tabs={TAB_LIST_SUBJECTS}
             activeTab="Basic config"
@@ -165,6 +197,7 @@ class SubjectConfigPage extends React.PureComponent
                 errors={errors}
               />
             </Grid.Row>
+            {this.renderFooter()}
           </Grid>
         </Segment>
       </Container>
@@ -172,8 +205,9 @@ class SubjectConfigPage extends React.PureComponent
   }
 }
 
-const mapStateToProps = ({ subjectConfigPage }: IAppState) => ({
+const mapStateToProps = ({ subjectConfigPage, common }: IAppState) => ({
   subjectConfigPage,
+  common,
 });
 
 const mapDispatchToProps = {
@@ -181,6 +215,8 @@ const mapDispatchToProps = {
   setFormData,
   resetStateData,
   addSubject,
+  getSubjectById,
+  updateSubject,
 };
 
 export default connect(

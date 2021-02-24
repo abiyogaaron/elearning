@@ -21,12 +21,12 @@ export const SKELETON_FORM_FIELDS: IFormFields[] = [
         options: [
           {
             key: 'semester01',
-            value: 'semester_1',
+            value: 'semester_01',
             text: 'Semester one',
           },
           {
             key: 'semester02',
-            value: 'semester_2',
+            value: 'semester_02',
             text: 'Semester Two',
           },
         ],
@@ -40,47 +40,47 @@ export const SKELETON_FORM_FIELDS: IFormFields[] = [
         options: [
           {
             key: 'week01',
-            value: 'week_1',
+            value: 'week_01',
             text: 'Week one',
           },
           {
             key: 'week02',
-            value: 'week_2',
+            value: 'week_02',
             text: 'Week two',
           },
           {
             key: 'week03',
-            value: 'week_3',
+            value: 'week_03',
             text: 'Week three',
           },
           {
             key: 'week04',
-            value: 'week_4',
+            value: 'week_04',
             text: 'Week four',
           },
           {
             key: 'week05',
-            value: 'week_5',
+            value: 'week_05',
             text: 'Week five',
           },
           {
             key: 'week06',
-            value: 'week_6',
+            value: 'week_06',
             text: 'Week six',
           },
           {
             key: 'week07',
-            value: 'week_7',
+            value: 'week_07',
             text: 'Week seven',
           },
           {
             key: 'week08',
-            value: 'week_8',
+            value: 'week_08',
             text: 'Week eight',
           },
           {
             key: 'week09',
-            value: 'week_9',
+            value: 'week_09',
             text: 'Week nine',
           },
           {

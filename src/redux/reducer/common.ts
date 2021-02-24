@@ -23,6 +23,7 @@ const INITIAL_STATE: ICommonState = {
   pageLoading: false,
   sidebarVisible: false,
   userProfile: {
+    id: '',
     email: '',
     isVerified: false,
     name: null,
