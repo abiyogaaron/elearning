@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { withRouter, RouteComponentProps, Prompt } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { History } from 'history';
 import {
@@ -14,8 +14,8 @@ import BreadcrumbsMenu from '../components/breadcrumbsMenu';
 import FooterForm from '../components/footerForm';
 import Tabs from '../components/tabs';
 import FormWrapper from '../components/formWrapper';
-import { TAB_LIST_SUBJECTS } from '../constants';
-import { SKELETON_FORM_FIELDS } from '../constants/skeleton';
+import { TAB_LIST_SUBJECTS, PROMPT_MESSAGE } from '../constants';
+import { SKELETON_SUBJECT_CONFIG_FORM } from '../constants/skeleton';
 import { ISubjectConfigPageState, IAppState, ICommonState } from '../interface/state';
 import { ISubjectModels } from '../interface/model';
 import {
@@ -89,11 +89,12 @@ class SubjectConfigPage extends React.PureComponent
     Validator.validate(form, SUBJECT_CONFIG_VALIDATION_RULES)
       .then(async (data) => {
         if (this.subjectId) {
-          await this.props.updateSubject(data, this.subjectId, userProfile.id);
+          await this.props.updateSubject(data, this.subjectId, userProfile.id || '');
           this.setState({
             isEditMode: false,
           });
-        } else this.props.addSubject(data, this.props.history, userProfile.id);
+        } else this.props.addSubject(data, this.props.history, userProfile.id || '');
+        this.props.setErrors({});
       })
       .catch((err) => {
         const errorMessages = Validator.getErrorMessages(err);
@@ -103,9 +104,17 @@ class SubjectConfigPage extends React.PureComponent
 
   public toggleEditMode = () => {
     const { isEditMode } = this.state;
+    const { formDefault } = this.props.subjectConfigPage;
+
+    this.props.setFormData(formDefault);
     this.setState({
       isEditMode: !isEditMode,
     });
+
+    if (isEditMode) {
+      this.props.setFormData(formDefault);
+      this.props.setErrors({});
+    }
   };
 
   public renderButton = () => {
@@ -165,6 +174,10 @@ class SubjectConfigPage extends React.PureComponent
 
     return (
       <Container>
+        <Prompt
+          when={isEditMode}
+          message={PROMPT_MESSAGE}
+        />
         <BreadcrumbsMenu
           showNextMenu
           title="Lesson Subject"
@@ -189,7 +202,8 @@ class SubjectConfigPage extends React.PureComponent
             <Grid.Row>
               <FormWrapper
                 <ISubjectModels>
-                forms={SKELETON_FORM_FIELDS}
+                centered
+                forms={SKELETON_SUBJECT_CONFIG_FORM}
                 editMode={isEditMode}
                 handleChange={this.handleChange}
                 handleSelectionChange={this.handleSelectionChange}

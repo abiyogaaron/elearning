@@ -24,7 +24,7 @@ class Home extends React.PureComponent<IHomeProps> {
         <Header color="teal" as="h2">
           <Icon name="dashboard" />
           <Header.Content>
-            {userProfile.role}
+            {userProfile.user_role}
             {' '}
             home
           </Header.Content>

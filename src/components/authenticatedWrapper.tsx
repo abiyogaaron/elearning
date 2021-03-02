@@ -1,20 +1,35 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Dimmer, Loader, Sidebar } from 'semantic-ui-react';
+import {
+  Dimmer,
+  Loader,
+  Sidebar,
+  Container,
+  Button,
+  Card,
+  Image,
+  Icon,
+  Header,
+} from 'semantic-ui-react';
 import { IAppState, ICommonState } from '../interface/state';
 import { ICommonUser } from '../interface';
+import { BLOCKED_ACCESS_PAGES, APP_PATH } from '../constants';
 import {
   setUserAuth,
   resetCommonState,
   setPageLoading,
   setSidebarVisible,
   getUserProfile,
+  sendVerificationEmail,
+  updateUserProfile,
 } from '../redux/actions/common';
 import Firebase from '../service';
 import SidebarMenu from './sidebarMenu';
 import Navbar from './navbar';
+import { formatPrintDate } from '../helper';
 import '../styles/AuthenticationWrapper.modules.scss';
+import { IUserModels } from '../interface/model';
 
 interface IAuthenticatedWrapperProps extends RouteComponentProps {
   common: ICommonState,
@@ -23,6 +38,8 @@ interface IAuthenticatedWrapperProps extends RouteComponentProps {
   setPageLoading(pageLoading: boolean): void;
   setSidebarVisible(sidebarVisible: boolean): void;
   getUserProfile(email: string): void;
+  sendVerificationEmail(): void;
+  updateUserProfile(userProfile: IUserModels): void;
 }
 
 class AuthenticatedWrapper extends React.Component<IAuthenticatedWrapperProps> {
@@ -36,21 +53,31 @@ class AuthenticatedWrapper extends React.Component<IAuthenticatedWrapperProps> {
   }
 
   componentDidMount() {
-    const firebase = new Firebase();
+    const { pathname } = this.props.location;
 
-    this.props.setPageLoading(true);
-    this.observer = firebase.getAuth().onAuthStateChanged(async (userAuth) => {
-      if (userAuth) {
-        this.props.setUserAuth(userAuth);
-        const refreshToken = await userAuth.getIdToken();
-        localStorage.setItem('user-token-elearning', refreshToken);
+    if (!BLOCKED_ACCESS_PAGES.includes(pathname as APP_PATH)) {
+      const firebase = new Firebase();
 
-        await this.props.getUserProfile(userAuth.email);
-      } else {
-        firebase.logout(this.props.history);
-      }
-      this.props.setPageLoading(false);
-    });
+      this.props.setPageLoading(true);
+      this.observer = firebase.getAuth().onAuthStateChanged(async (userAuth) => {
+        if (userAuth) {
+          this.props.setUserAuth(userAuth);
+          const refreshToken = await userAuth.getIdToken();
+          localStorage.setItem('user-token-elearning', refreshToken);
+
+          await this.props.getUserProfile(userAuth.email);
+          if (userAuth.emailVerified && !this.props.common.userProfile.user_isVerified) {
+            const { userProfile } = this.props.common;
+            userProfile.user_isVerified = true;
+
+            await this.props.updateUserProfile(userProfile);
+          }
+        } else {
+          firebase.logout(this.props.history);
+        }
+        this.props.setPageLoading(false);
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -73,15 +100,63 @@ class AuthenticatedWrapper extends React.Component<IAuthenticatedWrapperProps> {
     }
   };
 
+  public renderChildren = () => {
+    const {
+      user_full_name,
+      created_at,
+      user_role,
+    } = this.props.common.userProfile;
+    const { emailVerified } = this.props.common.user;
+    if (emailVerified) {
+      return (
+        this.props.children
+      );
+    }
+    return (
+      <Container>
+        <Header as="h1" textAlign="center">Please Verified your account first</Header>
+        <Card raised centered>
+          <Image
+            src="https://react.semantic-ui.com/images/avatar/large/matthew.png"
+            wrapped
+            ui={false}
+          />
+          <Card.Content>
+            <Card.Header>{user_full_name || 'Name is empty'}</Card.Header>
+            <Card.Meta>
+              <span className="date">{formatPrintDate(created_at)}</span>
+            </Card.Meta>
+            <Card.Description>
+              {user_role}
+            </Card.Description>
+          </Card.Content>
+          <Card.Content extra>
+            <Button
+              id="btn-send-email-verification"
+              size="small"
+              color="teal"
+              className="ml-8"
+              fluid
+              onClick={this.props.sendVerificationEmail}
+            >
+              <Icon name="send" />
+              Send email verification email
+            </Button>
+          </Card.Content>
+        </Card>
+      </Container>
+    );
+  };
+
   public render() {
     const { pageLoading, sidebarVisible, userProfile } = this.props.common;
-    const { role, email } = userProfile;
+    const { user_role, user_email } = userProfile;
 
     return (
       <>
         <Sidebar.Pushable>
           <SidebarMenu
-            isAdmin={role === 'admin'}
+            isAdmin={user_role === 'admin'}
             visible={sidebarVisible}
           />
           <Sidebar.Pusher
@@ -91,13 +166,12 @@ class AuthenticatedWrapper extends React.Component<IAuthenticatedWrapperProps> {
           >
             <Navbar
               logout={this.logout}
-              name={email}
+              name={user_email}
               toggleSidebar={this.toggleSidebar}
             />
-            {this.props.children}
+            {this.renderChildren()}
           </Sidebar.Pusher>
         </Sidebar.Pushable>
-
         <Dimmer active={pageLoading} page>
           <Loader size="massive">Loading ...</Loader>
         </Dimmer>
@@ -116,6 +190,8 @@ const mapDispatchToProps = {
   setPageLoading,
   setSidebarVisible,
   getUserProfile,
+  sendVerificationEmail,
+  updateUserProfile,
 };
 
 export default connect(

@@ -1,9 +1,39 @@
+@import './variable.scss';
+
 .pull-right {
   float: right;
 }
+
 .pull-left {
   float: left;
 }
+
 .cursor-click{
   cursor: pointer;
+}
+
+.input-error input{
+  background-color: $error-color-background !important;
+  border-color: $error-color-light !important;
+  color: $error-color !important;
+  &::-webkit-input-placeholder {
+    color: $error-color-light !important;
+  }
+  &::-moz-placeholder {
+    color: $error-color-light !important;
+  }
+  &:-ms-input-placeholder {
+    color: $error-color-light !important;
+  }
+  &:-moz-placeholder {
+    color: $error-color-light !important;
+  }
+}
+
+.text-label-click {
+  color: $teal-color;
+  margin-top: 10px;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: underline;
 }

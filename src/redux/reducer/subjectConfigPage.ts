@@ -2,6 +2,7 @@ import { ISubjectConfigPageState } from '../../interface/state';
 import {
   ISubjectConfigPageSetErrorsAction,
   ISubjectConfigPageSetFormAction,
+  ISubjectConfigPageSetFormDefaultAction,
   ISubjectConfigPageSetLoadingAction,
   ISubjectConfigPageAction,
   ESubjectConfigPageAction,
@@ -11,6 +12,7 @@ import Subject from '../../models/Subject';
 const INITIAL_STATE: ISubjectConfigPageState = {
   isLoading: false,
   form: new Subject().getAttributes(),
+  formDefault: new Subject().getAttributes(),
   errors: {},
 };
 
@@ -24,6 +26,10 @@ const subjectConfigPageReducer = (state = INITIAL_STATE, action: ISubjectConfigP
     case ESubjectConfigPageAction.SUBJECT_SET_FORM: {
       const { form } = action.payload as ISubjectConfigPageSetFormAction;
       return { ...state, form };
+    }
+    case ESubjectConfigPageAction.SUBJECT_SET_FORM_DEFAULT: {
+      const { formDefault } = action.payload as ISubjectConfigPageSetFormDefaultAction;
+      return { ...state, formDefault };
     }
     case ESubjectConfigPageAction.SUBJECT_SET_ERRORS: {
       const { errors } = action.payload as ISubjectConfigPageSetErrorsAction;

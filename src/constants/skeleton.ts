@@ -1,6 +1,62 @@
 import { IFormFields } from '../interface';
 
-export const SKELETON_FORM_FIELDS: IFormFields[] = [
+export const SKELETON_RESET_PASSWORD_FORM: IFormFields[] = [
+  {
+    title: 'Reset your password',
+    loading: false,
+    form: [
+      {
+        label: 'Old Password',
+        id: 'old-password-field',
+        key: 'password_old',
+        placeholder: 'type your old password here',
+        type: 'password',
+        showPassword: false,
+      },
+      {
+        label: 'New Password',
+        id: 'new-password-field',
+        key: 'password_new',
+        placeholder: 'type your new password here',
+        type: 'password',
+        showPassword: false,
+      },
+      {
+        label: 'Confirm Password',
+        id: 'confirm-password-field',
+        key: 'password_confirm',
+        placeholder: 'confirm your new password here',
+        type: 'password',
+        showPassword: false,
+      },
+    ],
+  },
+];
+
+export const SKELETON_SETTING_PROFILE_FORM: IFormFields[] = [
+  {
+    title: 'Basic Settings',
+    loading: false,
+    form: [
+      {
+        label: 'Full name',
+        id: 'user-full-name-field',
+        key: 'user_full_name',
+        placeholder: 'type your full name here',
+        type: 'text',
+      },
+      {
+        label: 'Phone number',
+        id: 'user-phone-number-field',
+        key: 'user_phone_number',
+        placeholder: 'type your phone number here',
+        type: 'text',
+      },
+    ],
+  },
+];
+
+export const SKELETON_SUBJECT_CONFIG_FORM: IFormFields[] = [
   {
     title: 'General Settings',
     loading: false,

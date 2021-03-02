@@ -1,4 +1,5 @@
 import { ThunkAction } from 'redux-thunk';
+import { batch } from 'react-redux';
 import { History } from 'history';
 import { toast } from 'react-toastify';
 import { IAppState } from '../../interface/state';
@@ -31,6 +32,11 @@ export const setFormData = (form: ISubjectModels): ISubjectConfigPageAction => (
   payload: { form },
 });
 
+export const setFormDefaultData = (formDefault: ISubjectModels): ISubjectConfigPageAction => ({
+  type: ESubjectConfigPageAction.SUBJECT_SET_FORM_DEFAULT,
+  payload: { formDefault },
+});
+
 export const addSubject = (
   form: ISubjectModels,
   history: History,
@@ -38,12 +44,12 @@ export const addSubject = (
 ): ThunkAction<void, IAppState, {}, TAllAction> => async (dispatch) => {
   try {
     dispatch(setLoading(true));
-    const firebase = new Firebase();
     const formData = { ...form };
     formData.created_at = new Date().getTime();
     formData.created_by = userId;
 
-    await firebase.addDocumentToCollections(TABLE_NAME, form);
+    const firebase = new Firebase();
+    await firebase.addDocumentToCollections<ISubjectModels>(TABLE_NAME, formData);
     history.push('/subjects');
   } catch (err) {
     toast.error(err.message);
@@ -59,7 +65,10 @@ export const getSubjectById = (
     dispatch(setLoading(true));
     const firebase = new Firebase();
     const subject = await firebase.getDocumentsFromCollectionsById<ISubjectModels>(TABLE_NAME, id);
-    dispatch(setFormData(subject));
+    batch(() => {
+      dispatch(setFormData(subject));
+      dispatch(setFormDefaultData(subject));
+    });
   } catch (err) {
     toast.error(err.message);
   } finally {
@@ -79,7 +88,7 @@ export const updateSubject = (
     formData.updated_at = new Date().getTime();
     formData.updated_by = userId;
 
-    await firebase.updateDocumentsFromCollections<ISubjectModels>(TABLE_NAME, form, id);
+    await firebase.updateDocumentsFromCollections<ISubjectModels>(TABLE_NAME, formData, id);
     toast.success(`${id} successfully updated ...`);
   } catch (err) {
     toast.error(err.message);

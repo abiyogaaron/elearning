@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Container,
   Menu,
@@ -35,7 +36,12 @@ class Navbar extends React.PureComponent<INavbarProps> {
             text={this.props.name}
           >
             <Dropdown.Menu>
-              <Dropdown.Item icon="settings" text="settings" />
+              <Dropdown.Item
+                icon="settings"
+                text="settings"
+                as={Link}
+                to="/settings/profile"
+              />
               <Dropdown.Item icon="sign out" text="Sign out" onClick={this.logout} />
             </Dropdown.Menu>
           </Dropdown>

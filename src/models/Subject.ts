@@ -18,7 +18,7 @@ class Subject implements ISubjectModels {
 
   public subject_ppt_slide_url: string = '';
 
-  public created_at: number = -1;
+  public created_at: number = new Date().getTime();
 
   public updated_at: number = -1;
 

@@ -1,5 +1,10 @@
-import { ICommonUser, UserProfile } from './index';
-import { ISubjectModels, ILoginModels } from './model';
+import { ICommonUser } from './index';
+import {
+  ISubjectModels,
+  ILoginModels,
+  IUserModels,
+  IPasswordSettingsModels,
+} from './model';
 
 export interface ILoginPageState {
   isLoading: boolean;
@@ -11,7 +16,7 @@ export interface ICommonState {
   user: ICommonUser;
   pageLoading: boolean;
   sidebarVisible: boolean;
-  userProfile: UserProfile;
+  userProfile: IUserModels;
 }
 
 export interface IHomeState {
@@ -22,6 +27,7 @@ export interface IHomeState {
 export interface ISubjectConfigPageState {
   isLoading: boolean;
   form: ISubjectModels;
+  formDefault: ISubjectModels;
   errors: { [key: string]: string };
 }
 
@@ -30,10 +36,26 @@ export interface ISubjectsPageState {
   list: ISubjectModels[];
 }
 
+export interface IProfileSettingsPageState {
+  isLoading: boolean;
+  form: IUserModels;
+  formDefault: IUserModels;
+  errors: { [key: string]: string };
+}
+
+export interface IPasswordSettingsPageState {
+  isLoading: boolean;
+  form: IPasswordSettingsModels;
+  formDefault: IPasswordSettingsModels;
+  errors: { [key: string]: string };
+}
+
 export interface IAppState {
   loginPage: ILoginPageState;
   common: ICommonState;
   homePage: IHomeState;
   subjectConfigPage: ISubjectConfigPageState;
   subjectsPage: ISubjectsPageState;
+  profileSettingsPage: IProfileSettingsPageState;
+  passwordSettingsPage: IPasswordSettingsPageState;
 }

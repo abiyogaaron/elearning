@@ -12,6 +12,7 @@ const INITIAL_STATE: ILoginPageState = {
   form: {
     email: '',
     password: '',
+    emailForgotPassword: '',
   },
   errors: {},
 };

@@ -1,8 +1,5 @@
 import { SemanticICONS } from 'semantic-ui-react';
 
-export type TRole = 'admin' | 'student';
-export type TStatus = 'active' | 'terminated';
-
 export interface IAuthFireBaseResponse {
   displayName: string | null;
   email: string | null;
@@ -26,22 +23,19 @@ export interface ICommonUser {
   createdAt: number;
 }
 
-export interface UserProfile {
-  id: string;
-  email: string;
-  isVerified: boolean;
-  name: string | null;
-  role: TRole;
-  status: TStatus;
-}
-
 export interface IMenuItems {
   to: string;
   title: string;
   icon: SemanticICONS;
 }
 
-export type IFieldType = 'text' | 'radio' | 'select' | 'checkbox' | 'dropdown';
+export type IFieldType =
+  |'text'
+  | 'radio'
+  | 'select'
+  | 'checkbox'
+  | 'dropdown'
+  | 'password';
 
 export interface IFieldSelectOptions {
   key: string;
@@ -56,17 +50,21 @@ export interface IFields {
   type: IFieldType;
   placeholder?: string;
   options?: IFieldSelectOptions[]
+  labelInput?: string;
+  showPassword?: boolean;
 }
 
 export interface IFormFields {
-  title: string;
+  title?: string;
   loading: boolean;
   form: IFields[]
 }
 
 export type ITabType =
   'Basic config' |
-  'Subject list';
+  'Subject list' |
+  'Profile setting' |
+  'Reset password';
 
 export interface ITab {
   name: string;

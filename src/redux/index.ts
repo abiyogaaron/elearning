@@ -7,6 +7,8 @@ import loginPageReducer from './reducer/loginPage';
 import homePageReducer from './reducer/homePage';
 import subjectConfigPageReducer from './reducer/subjectConfigPage';
 import subjectsPageReducer from './reducer/subjectsPage';
+import profileSettingPageReducer from './reducer/profileSettingPage';
+import passwordSettingPageReducer from './reducer/passwordSettingPage';
 import common from './reducer/common';
 
 const rootReducer = combineReducers({
@@ -15,6 +17,8 @@ const rootReducer = combineReducers({
   homePage: homePageReducer,
   subjectConfigPage: subjectConfigPageReducer,
   subjectsPage: subjectsPageReducer,
+  profileSettingsPage: profileSettingPageReducer,
+  passwordSettingsPage: passwordSettingPageReducer,
 });
 
 let composeEnhancer = compose;

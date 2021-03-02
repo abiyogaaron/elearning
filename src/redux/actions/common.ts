@@ -1,7 +1,8 @@
 import { ThunkAction } from 'redux-thunk';
 import { toast } from 'react-toastify';
 import { IAppState } from '../../interface/state';
-import { ICommonUser, UserProfile } from '../../interface';
+import { ICommonUser } from '../../interface';
+import { IUserModels } from '../../interface/model';
 import {
   TAllAction,
   ECommonAction,
@@ -24,7 +25,7 @@ export const setSidebarVisible = (sidebarVisible: boolean): ICommonAction => ({
   payload: { sidebarVisible },
 });
 
-export const setUserProfile = (userProfile: UserProfile): ICommonAction => ({
+export const setUserProfile = (userProfile: IUserModels): ICommonAction => ({
   type: ECommonAction.COMMON_SET_USER_PROFILE,
   payload: { userProfile },
 });
@@ -42,5 +43,30 @@ export const getUserProfile = (
     dispatch(setUserProfile(userProfile));
   } catch (err) {
     toast.error(err.message);
+  }
+};
+
+export const updateUserProfile = (
+  user: IUserModels,
+): ThunkAction<void, IAppState, {}, TAllAction> => async () => {
+  try {
+    const firebase = new Firebase();
+    await firebase.updateDocumentsFromCollections('users', user, user.id || '');
+  } catch (err) {
+    toast.error(err.message);
+  }
+};
+
+export const sendVerificationEmail = ()
+: ThunkAction<void, IAppState, {}, TAllAction> => async (dispatch) => {
+  try {
+    dispatch(setPageLoading(true));
+    const firebase = new Firebase();
+    await firebase.sendVerificationEmail();
+    toast.success('The email verification has been sent, please check your inbox');
+  } catch (err) {
+    toast.error('Please try again to send verification email ...');
+  } finally {
+    dispatch(setPageLoading(false));
   }
 };

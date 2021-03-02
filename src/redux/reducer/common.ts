@@ -7,6 +7,7 @@ import {
   ICommonSetSidebarAction,
   ICommonSetUserProfileAction,
 } from '../../interface/action';
+import User from '../../models/User';
 
 const INITIAL_STATE: ICommonState = {
   user: {
@@ -22,14 +23,7 @@ const INITIAL_STATE: ICommonState = {
   },
   pageLoading: false,
   sidebarVisible: false,
-  userProfile: {
-    id: '',
-    email: '',
-    isVerified: false,
-    name: null,
-    role: 'student',
-    status: 'active',
-  },
+  userProfile: new User().getAttributes(),
 };
 
 const commonReducer = (state = INITIAL_STATE, action: ICommonAction)
